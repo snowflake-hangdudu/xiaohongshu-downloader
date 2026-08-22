@@ -1426,6 +1426,9 @@
 
     window.__XHS_DL_API = {
       isDetailPage,
+      isPanelOpen() {
+        return isOpen;
+      },
       collectNote,
       refreshNote,
       openPanel,
@@ -1447,7 +1450,24 @@
 
   let lastHref = location.href;
   let lastDetail = isDetailPage();
-  const observer = new MutationObserver(() => {
+  let mediaRefreshTimer = 0;
+  function queueMediaRefresh(records) {
+    if (!window.__XHS_DL_API?.isPanelOpen?.() || !isDetailPage()) return;
+    const panel = document.getElementById('xhs-dl-panel-root');
+    const note = noteRoot();
+    const changedInNote = records.some((record) => {
+      const target = record.target;
+      return target instanceof Node && note.contains(target) && !panel?.contains(target);
+    });
+    if (!changedInNote) return;
+    clearTimeout(mediaRefreshTimer);
+    mediaRefreshTimer = setTimeout(() => {
+      if (window.__XHS_DL_API?.isPanelOpen?.() && isDetailPage()) {
+        window.__XHS_DL_API.refreshNote();
+      }
+    }, 350);
+  }
+  const observer = new MutationObserver((records) => {
     const href = location.href;
     const detail = isDetailPage();
     if (href !== lastHref || detail !== lastDetail) {
@@ -1457,9 +1477,16 @@
       if (detail) {
         setTimeout(() => window.__XHS_DL_API?.refreshNote?.(), 600);
       }
+      return;
     }
+    queueMediaRefresh(records);
   });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['src', 'srcset', 'poster']
+  });
 
   EXT.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     if (msg?.type === 'XHS_DL_GET_INFO') {

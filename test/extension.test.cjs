@@ -19,6 +19,8 @@ assert.ok(content.includes('MAX_BLOB_DOWNLOAD_BYTES'), 'blob-download memory lim
 assert.ok(content.includes('received > MAX_BLOB_DOWNLOAD_BYTES'), 'unknown-length blobs must also be capped');
 assert.ok(content.includes('isOlderVersion(VERSION, minimum)'), 'remote minimum-version notice must be honored');
 assert.ok(content.includes('const STORE_RATING_MIN_SUCCESS = 10'), 'rating prompt must wait for 10 successful downloads');
+assert.ok(content.includes('queueMediaRefresh'), 'late-loading carousel media must trigger a debounced refresh');
+assert.ok(content.includes("attributeFilter: ['src', 'srcset', 'poster']"), 'late media source assignment must be observed');
 assert.ok(!fs.existsSync(path.join(root, 'xiaohongshu-downloader.zip')), 'stale release zip must not live beside source');
 
 console.log('extension checks passed');
