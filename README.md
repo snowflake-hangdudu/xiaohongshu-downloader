@@ -1,4 +1,4 @@
-# 小红书素材下载助手
+# 小红书下载助手
 
 Chrome / Edge Manifest V3 扩展。只在小红书**笔记详情页**识别已经加载的图片、视频和文字，再交给浏览器下载管理器保存。
 
@@ -27,7 +27,20 @@ Chrome / Edge Manifest V3 扩展。只在小红书**笔记详情页**识别已�
 
 ## 图标
 
-`icons/icon-source.svg` 是可编辑矢量源文件，采用与 B 站 / YouTube 下载器一致的卡片、播放键和下载托盘构图，仅使用小红书红与浅粉主题色。修改后执行 `python scripts/gen_icons.py` 生成浏览器所需 PNG。
+`icons/icon-master.png` 是与 B 站 / YouTube 下载器共用几何结构的母版；生成脚本只把品牌蓝替换为小红书红，保证三个下载器在商店列表中的比例、阴影与卡片结构完全一致。修改后执行 `python scripts/gen_icons.py` 生成浏览器所需 PNG。
+
+## 打包
+
+```powershell
+python scripts/pack_all.py
+```
+
+会生成两种商店包：
+
+- `xiaohongshu-downloader-chrome.zip`：Chrome / Edge
+- `xiaohongshu-downloader-firefox.xpi`：Firefox
+
+也可单独执行 `python scripts/pack.py` 或 `python scripts/pack_firefox.py`。
 
 ## 开发检查
 

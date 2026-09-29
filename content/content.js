@@ -1,5 +1,5 @@
 /**
- * 小红书素材下载助手 — 仅在笔记详情页展示，样式与公共能力对齐 YouTube 下载器。
+ * 小红书下载助手 — 仅在笔记详情页展示，样式与公共能力对齐 YouTube 下载器。
  */
 (function () {
   'use strict';
@@ -12,7 +12,7 @@
   const ICON_URL = EXT.runtime.getURL('icons/icon128.png');
   const FAQ_URL = 'https://snowflake-hangdudu.github.io/xiaohongshu-downloader/faq.html';
   const PRIVACY_URL = 'https://snowflake-hangdudu.github.io/xiaohongshu-downloader/';
-  const CONTENT_JSON_URL = 'https://download-config-hub.nutmeg-venus-6882.chatgpt.site/api/config/xiaohongshu';
+  const CONTENT_JSON_URL = 'http://124.222.62.190:8081/api/config/xiaohongshu';
   const CONTENT_CACHE_KEY = 'xhsDlRemoteContent_v1';
   const STORE_RATING_KEY = 'xhsDlStoreRating_v1';
   const STORE_RATING_MIN_SUCCESS = 10;
@@ -33,7 +33,7 @@
       enabled: true,
       title: '开发合作',
       updated: '2026-08-22',
-      body: '接浏览器插件定制开发。\n\n有合作意向请发邮件。\n邮箱：hangdudu0@agent.qq.com\n请在邮件中备注「插件开发」，并简单说明需求。'
+      body: '接浏览器插件定制开发。\n\n有合作意向请联系 QQ：748604487\n邮箱：hangdudu0@agent.qq.com\n请备注「插件开发」，并简单说明需求。'
     },
     rating: {
       enabled: false,
@@ -441,15 +441,15 @@
     panel.id = 'xhs-dl-panel-root';
     panel.className = 'is-hidden';
     panel.appendChild(createFragment(`
-      <div id="xhs-dl-panel">
-        <button id="xhs-dl-toggle" title="保存素材">
+      <div id="xhs-dl-panel" data-theme="xiaohongshu">
+        <button id="xhs-dl-toggle" title="保存素材" aria-label="打开下载助手" aria-controls="xhs-dl-menu" aria-expanded="false">
           <img src="${ICON_URL}" alt="">
         </button>
-        <div id="xhs-dl-menu" class="hidden">
+        <div id="xhs-dl-menu" class="hidden" role="dialog" aria-modal="false" aria-label="小红书下载助手">
           <div class="xhs-dl-header">
             <div class="xhs-dl-header-left">
-              <img class="xhs-dl-header-icon" src="${ICON_URL}" alt="" width="22" height="22">
-              <span class="xhs-dl-title">小红书素材下载助手</span>
+              <img class="xhs-dl-header-icon" src="${ICON_URL}" alt="" width="30" height="30">
+              <span class="xhs-dl-title">小红书下载助手</span>
               <span class="xhs-dl-version">v${VERSION}</span>
             </div>
             <button id="xhs-dl-close" aria-label="关闭">&times;</button>
@@ -484,9 +484,9 @@
               </div>
 
               <div class="xhs-dl-tabs" role="tablist">
-                <button type="button" class="xhs-dl-tab active" data-tab="image">图片 <span class="xhs-dl-tab-count" data-count="image">0</span></button>
-                <button type="button" class="xhs-dl-tab" data-tab="video">视频 <span class="xhs-dl-tab-count" data-count="video">0</span></button>
-                <button type="button" class="xhs-dl-tab" data-tab="text">文字</button>
+                <button type="button" class="xhs-dl-tab active" data-tab="image" role="tab" aria-selected="true" aria-controls="xhs-dl-panel-image">图片 <span class="xhs-dl-tab-count" data-count="image">0</span></button>
+                <button type="button" class="xhs-dl-tab" data-tab="video" role="tab" aria-selected="false" aria-controls="xhs-dl-panel-video">视频 <span class="xhs-dl-tab-count" data-count="video">0</span></button>
+                <button type="button" class="xhs-dl-tab" data-tab="text" role="tab" aria-selected="false" aria-controls="xhs-dl-panel-text">文字</button>
               </div>
 
               <div id="xhs-dl-panel-image" class="xhs-dl-tab-panel">
@@ -541,7 +541,7 @@
               <a class="xhs-dl-privacy-link" href="${PRIVACY_URL}" target="_blank" rel="noopener">隐私政策</a>
               <a class="xhs-dl-faq-link" href="#notice" data-sheet="notice">公告</a>
               <a class="xhs-dl-faq-link" href="#coop" data-sheet="coop">开发合作</a>
-              <a class="xhs-dl-feedback" href="mailto:hangdudu0@agent.qq.com?subject=小红书素材下载助手反馈">反馈邮箱：hangdudu0@agent.qq.com</a>
+              <a class="xhs-dl-feedback" href="mailto:hangdudu0@agent.qq.com?subject=小红书下载助手反馈">反馈邮箱：hangdudu0@agent.qq.com</a>
             </div>
           </div>
           <div id="xhs-dl-terms" class="xhs-dl-terms hidden" role="dialog" aria-modal="true">
@@ -721,6 +721,7 @@
       panel.querySelectorAll('.xhs-dl-tab').forEach((btn) => {
         const key = btn.dataset.tab;
         btn.classList.toggle('active', key === currentTab);
+        btn.setAttribute('aria-selected', String(key === currentTab));
         const empty = key === 'video'
           ? !currentNote.videos.length
           : key === 'image'
@@ -1321,6 +1322,7 @@
       if (!isDetailPage()) return false;
       isOpen = true;
       menu.classList.remove('hidden');
+      toggleBtn.setAttribute('aria-expanded', 'true');
       showHome();
       setNoteLoading(true);
       setDetect('识别笔记中…', false);
@@ -1328,13 +1330,16 @@
       setTimeout(() => {
         if (isOpen && isDetailPage()) refreshNote();
       }, 600);
+      closeBtn.focus({ preventScroll: true });
       return true;
     }
 
     function closePanel() {
       isOpen = false;
       menu.classList.add('hidden');
+      toggleBtn.setAttribute('aria-expanded', 'false');
       showHome();
+      toggleBtn.focus({ preventScroll: true });
     }
 
     toggleBtn.addEventListener('click', () => {
@@ -1342,6 +1347,12 @@
       else openPanel();
     });
     closeBtn.addEventListener('click', closePanel);
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !isOpen) return;
+      event.preventDefault();
+      if (!pageEl?.classList.contains('hidden')) showHome();
+      else closePanel();
+    });
 
     panel.querySelectorAll('.xhs-dl-tab').forEach((btn) => {
       btn.addEventListener('click', () => {

@@ -1,6 +1,6 @@
 const EXT = typeof browser !== 'undefined' ? browser : chrome;
 
-const CONFIG_URL = 'https://download-config-hub.nutmeg-venus-6882.chatgpt.site/api/config/xiaohongshu';
+const CONFIG_URL = 'http://124.222.62.190:8081/api/config/xiaohongshu';
 const jobs = new Map();
 
 function cleanPart(value, fallback) {

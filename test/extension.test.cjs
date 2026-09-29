@@ -10,6 +10,8 @@ const agent = read('content/page-agent.js');
 
 assert.equal(manifest.manifest_version, 3, 'must remain MV3');
 assert.equal(manifest.version, '1.0.0', 'release manifest version must be explicit');
+assert.equal(manifest.name, '小红书下载助手', 'store display name must stay short');
+assert.equal(manifest.action.default_title, '小红书下载助手', 'toolbar title must match the store name');
 assert.ok(manifest.permissions.includes('downloads'), 'native downloads permission is required');
 assert.ok(manifest.content_scripts[0].matches.every((match) => /explore|discovery\/item|search_result/.test(match)), 'MAIN-world agent must be limited to detail URLs');
 assert.ok(!agent.includes('__INITIAL_STATE__'), 'do not collect unrelated page state');

@@ -40,16 +40,24 @@ def main():
     marquee = cover(image, (1400, 560))
     marquee.save(ROOT / 'marquee-1400x560.png', 'PNG', optimize=True)
 
-    # 商店图标必须是不透明 RGB PNG。
-    icon = Image.open(ICON).convert('RGBA').resize((256, 256), Image.Resampling.LANCZOS)
+    write_store_icons()
+
+
+def write_store_icons():
+    """商店图标用扩展图标铺满，透明圆角落到左右分色底上，不要再缩进贴红底。"""
+    icon = Image.open(ICON).convert('RGBA')
     for filename, size in [('store-icon-128.png', 128), ('logo-300.png', 300)]:
-        canvas = Image.new('RGB', (size, size), (255, 36, 66))
-        mark_size = round(size * 0.78)
-        mark = icon.resize((mark_size, mark_size), Image.Resampling.LANCZOS)
-        canvas.paste(mark, ((size - mark_size) // 2, (size - mark_size) // 2), mark)
+        mark = icon.resize((size, size), Image.Resampling.LANCZOS)
+        canvas = Image.new('RGB', (size, size), (255, 255, 255))
+        ImageDraw.Draw(canvas).rectangle((0, 0, size // 2, size), fill=(255, 36, 66))
+        canvas.paste(mark, (0, 0), mark)
         canvas.save(ROOT / filename, 'PNG', optimize=True)
         print('OK', filename, size)
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    if sys.argv[1:] == ['icons']:
+        write_store_icons()
+    else:
+        main()

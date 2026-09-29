@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "小红书素材下载助手",
+  "name": "小红书下载助手",
   "version": "1.0.0",
   "description": "在小红书笔记详情页保存已加载的图片、视频与文字。",
   "permissions": ["downloads", "storage", "activeTab"],
@@ -8,7 +8,7 @@
     "https://www.xiaohongshu.com/*",
     "https://*.xiaohongshu.com/*",
     "https://*.xhscdn.com/*",
-    "https://download-config-hub.nutmeg-venus-6882.chatgpt.site/*"
+    "http://124.222.62.190:8081/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -33,7 +33,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "小红书素材下载助手",
+    "default_title": "小红书下载助手",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

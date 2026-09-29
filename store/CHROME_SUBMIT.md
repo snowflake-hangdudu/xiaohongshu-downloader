@@ -1,5 +1,16 @@
 # Chrome Web Store 上架填写参考（1.0.0）
 
+## 打包
+
+项目根目录运行：
+
+```powershell
+python scripts/pack.py
+```
+
+上传 `xiaohongshu-downloader-chrome.zip`；不要提交源码目录。  
+一次打 Chrome / Edge + Firefox 两套：`python scripts/pack_all.py`。
+
 ## 基本资料
 
 - 类别：工具或效率
