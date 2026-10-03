@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="../shared/design-system.css">
 </head>
-<body>
+<body data-theme="xiaohongshu" data-kit="xiaohongshu">
   <div class="popup">
     <header class="popup-header">
-      <img src="../icons/icon48.png" width="28" height="28" alt="" class="popup-icon">
+      <img src="../icons/icon48.png" width="30" height="30" alt="" class="popup-icon">
       <div class="popup-header-text">
-        <h1>小红书下载助手</h1>
+        <h1 id="app-title" data-i18n="appTitle">小红书下载助手</h1>
         <span id="app-version" class="popup-version"></span>
       </div>
     </header>
@@ -18,7 +19,7 @@
       <div id="state-loading">
         <div class="popup-detect loading">
           <span class="popup-dot pulse"></span>
-          <span>正在识别页面…</span>
+          <span data-i18n="identifying">正在识别页面…</span>
         </div>
         <div class="popup-video-card is-loading">
           <div class="popup-cover-wrap">
@@ -35,6 +36,10 @@
       </div>
 
       <div id="state-video" class="hidden">
+        <div class="popup-detect ok">
+          <span class="popup-dot"></span>
+          <span data-i18n="recognizedNote">已识别到笔记详情</span>
+        </div>
         <div class="popup-video-card">
           <div class="popup-cover-wrap">
             <img id="video-cover" class="popup-cover hidden" alt="">
@@ -49,55 +54,49 @@
           </div>
         </div>
 
-        <ul class="popup-tips compact">
-          <li>实际保存请点页面右下角悬浮按钮</li>
-          <li>内容分为图片、视频、文字三类</li>
-          <li>仅保存当前详情页已经加载的公开内容</li>
-          <li>使用问题？<a id="popup-faq-link" href="../docs/faq.html" target="_blank" rel="noopener">查看常见问题</a></li>
-        </ul>
+        <div class="popup-note" role="note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+          <p data-i18n="readyNote">打开面板，选择图片、视频或文字。</p>
+        </div>
 
         <button id="btn-open-panel" type="button" class="popup-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-          打开下载面板
+          <span data-i18n="openPanel">打开下载面板</span>
         </button>
       </div>
 
       <div id="state-empty" class="hidden">
-        <div class="popup-detect warn">
-          <span class="popup-dot warn"></span>
-          <span>未识别到笔记详情页</span>
-        </div>
-        <div class="popup-empty-hero">
-          <div class="popup-empty-icon" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="16" rx="3"/>
-              <path d="M8 9h8M8 13h5"/>
-            </svg>
-          </div>
-          <p class="popup-empty-title">请先打开一篇小红书笔记</p>
-          <p class="popup-empty-lead">进入笔记详情页后按 F5，再点右下角悬浮按钮保存图片、视频或文字。</p>
+        <section class="popup-intro" aria-labelledby="empty-title">
+          <span id="page-status" class="popup-status">请先打开小红书</span>
+          <h2 id="empty-title">在小红书笔记页保存内容</h2>
+          <p id="empty-lead" class="popup-empty-lead">打开笔记或主页，点击下载按钮。</p>
           <p id="empty-current-site" class="popup-empty-site">当前页面：—</p>
-        </div>
-        <div class="popup-steps">
-          <div class="popup-step">
+        </section>
+        <ol class="popup-steps" aria-label="下载步骤">
+          <li class="popup-step">
             <span class="popup-step-num">1</span>
-            <span class="popup-step-text">打开一篇公开笔记详情</span>
-          </div>
-          <div class="popup-step">
+            <span class="popup-step-text" data-i18n="stepOpen">打开笔记或主页</span>
+          </li>
+          <li class="popup-step">
             <span class="popup-step-num">2</span>
-            <span class="popup-step-text">点击页面右下角悬浮按钮</span>
-          </div>
-          <div class="popup-step">
+            <span class="popup-step-text" data-i18n="stepEntry">点击页面右下角悬浮按钮</span>
+          </li>
+          <li class="popup-step">
             <span class="popup-step-num">3</span>
-            <span class="popup-step-text">按图片 / 视频 / 文字分类保存</span>
-          </div>
+            <span class="popup-step-text" data-i18n="stepSave">按图片 / 视频 / 文字分类保存</span>
+          </li>
+        </ol>
+        <div class="popup-note" role="note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+          <p data-i18n="emptyNote">支持图片、视频与文字。请只保存自己拥有版权或已获授权、且符合平台规则的内容。</p>
         </div>
         <div class="popup-feature-tags">
-          <span class="popup-feature-tag">图片</span>
-          <span class="popup-feature-tag">视频</span>
-          <span class="popup-feature-tag">文字</span>
+          <span class="popup-feature-tag" data-i18n="image">图片</span>
+          <span class="popup-feature-tag" data-i18n="video">视频</span>
+          <span class="popup-feature-tag" data-i18n="text">文字</span>
+          <span class="popup-feature-tag" data-i18n="creator">创作者</span>
         </div>
-        <a id="btn-go-xhs" class="popup-btn" href="https://www.xiaohongshu.com/explore" target="_blank" rel="noopener">
+        <a id="btn-go-xhs" class="popup-btn" href="https://www.xiaohongshu.com/explore" target="_blank" rel="noopener" data-i18n="openXhs">
           打开小红书
         </a>
       </div>
@@ -105,16 +104,29 @@
       <div id="state-error" class="hidden">
         <div class="popup-detect error">
           <span class="popup-dot error"></span>
-          <span id="error-text">加载失败</span>
+          <span id="error-text" data-i18n="loadFailed">加载失败</span>
         </div>
         <div class="popup-empty-hero compact">
-          <p class="popup-empty-title">暂时无法读取笔记信息</p>
-          <p class="popup-error-hint">请在笔记详情页按 F5 刷新后，再点击扩展图标。</p>
+          <p class="popup-empty-title" data-i18n="errorTitle">暂时无法读取笔记信息</p>
+          <p class="popup-error-hint" data-i18n="errorHint">刷新页面后重试。</p>
         </div>
-        <button id="btn-retry" type="button" class="popup-btn popup-btn-outline">刷新并重试</button>
+        <button id="btn-retry" type="button" class="popup-btn popup-btn-outline" data-i18n="retry">刷新并重试</button>
       </div>
     </main>
+
+    <footer class="popup-footer">
+      <nav class="popup-footer-links" aria-label="帮助链接" data-i18n-aria="helpLinks">
+        <a id="popup-faq" class="popup-footer-link" href="https://snowflake-hangdudu.github.io/xiaohongshu-downloader/faq.html" target="_blank" rel="noopener" data-i18n="faq">常见问题</a>
+        <span class="popup-footer-sep" aria-hidden="true">·</span>
+        <a id="popup-privacy" class="popup-footer-link" href="https://snowflake-hangdudu.github.io/xiaohongshu-downloader/" target="_blank" rel="noopener" data-i18n="privacy">隐私政策</a>
+      </nav>
+      <div class="popup-footer-line">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="disclaimer">仅供个人学习 · 请遵守小红书使用条款</span>
+      </div>
+    </footer>
   </div>
+  <script src="../shared/i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

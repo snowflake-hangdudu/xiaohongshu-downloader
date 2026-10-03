@@ -15,10 +15,16 @@ INCLUDE = [
     'popup/popup.css',
     'docs/faq.html',
     'docs/index.html',
+    'shared/i18n.js',
+    'shared/design-system.css',
+    'assets/donate-wechat.jpg',
+    'assets/donate-alipay.jpg',
     'icons/icon16.png',
     'icons/icon32.png',
     'icons/icon48.png',
     'icons/icon128.png',
+    '_locales/zh_CN/messages.json',
+    '_locales/en/messages.json',
     'README.md',
 ]
 

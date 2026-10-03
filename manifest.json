@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "小红书下载助手",
-  "version": "1.0.0",
-  "description": "在小红书笔记详情页保存已加载的图片、视频与文字。",
+  "default_locale": "zh_CN",
+  "name": "__MSG_extName__",
+  "version": "1.0.2",
+  "description": "__MSG_extDesc__",
   "permissions": ["downloads", "storage", "activeTab"],
   "host_permissions": [
     "https://www.xiaohongshu.com/*",
@@ -15,25 +16,21 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.xiaohongshu.com/explore/*",
-        "https://www.xiaohongshu.com/discovery/item/*",
-        "https://www.xiaohongshu.com/search_result/*"
-      ],
+      "matches": ["https://www.xiaohongshu.com/*"],
       "js": ["content/page-agent.js"],
       "run_at": "document_idle",
       "world": "MAIN"
     },
     {
       "matches": ["https://www.xiaohongshu.com/*"],
-      "js": ["content/content.js"],
-      "css": ["content/content.css"],
+      "js": ["shared/i18n.js", "content/content.js"],
+      "css": ["content/content.css", "shared/design-system.css"],
       "run_at": "document_idle"
     }
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "小红书下载助手",
+    "default_title": "__MSG_extName__",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -52,6 +49,8 @@
       "resources": [
         "icons/icon48.png",
         "icons/icon128.png",
+        "assets/donate-wechat.jpg",
+        "assets/donate-alipay.jpg",
         "docs/faq.html",
         "docs/index.html"
       ],
